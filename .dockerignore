@@ -9,3 +9,8 @@ __pycache__/
 *.docx
 *.pdf
 *.lock
+# GridSearchCV diagnostic artifacts — not loaded by the dashboard; excluding
+# drops the Docker image by ~92 MB.
+outputs/models/*_search.joblib
+# Raw OULAD CSVs are not used at runtime.
+data/raw/

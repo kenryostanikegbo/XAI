@@ -28,7 +28,16 @@ notebooks/
 *.pdf
 *.tmp
 
-# Outputs we deliberately DO ship: outputs/models/, outputs/figures/,
-# outputs/tables/, data/processed/, data/raw/. The app reads them at runtime.
-# If you ever want to slim the repo, add them here — but Render's free tier
-# has 512 MB RAM and we need the model artifacts at runtime.
+# OULAD raw source files — large and not used by the dashboard at runtime.
+# The dashboard reads only processed artifacts (data/processed/, outputs/).
+data/raw/
+
+# GridSearchCV diagnostic artifacts — kept on disk for reproducibility but the
+# dashboard only loads `*_best.joblib`. Excluding these drops the runtime image
+# by ~92 MB.
+outputs/models/*_search.joblib
+
+# Outputs we deliberately DO ship: outputs/models/*_best.joblib,
+# outputs/models/shap_explainer_*.joblib, outputs/models/shap_values_*.npy,
+# outputs/models/shap_indices_strat.npy, outputs/figures/, outputs/tables/,
+# data/processed/. The app reads them at runtime.
