@@ -113,7 +113,7 @@
         <span class="hint">Early-engagement signal; top-3 LR feature.</span>
       </label>
       <label>Weekend click ratio (0–1)
-        <input type="number" min="0" max="1" step="0.01" name="weekend_click_ratio" value="{{ features.weekend_click_ratio }}" required>
+        <input type="number" min="0" max="1" step="any" inputmode="decimal" name="weekend_click_ratio" value="{{ features.weekend_click_ratio }}" required>
       </label>
     </fieldset>
 
@@ -125,14 +125,15 @@
         <span class="hint">Out of {{ max_assessments_available }} available for this (module, presentation).</span>
       </label>
       <label>Mean assessment score (0–100)
-        <input type="number" min="0" max="100" step="0.01" name="mean_assessment_score" value="{{ features.mean_assessment_score }}" required>
+        <input type="number" min="0" max="100" step="any" inputmode="decimal" name="mean_assessment_score" value="{{ features.mean_assessment_score }}" required>
       </label>
       <label>Weighted mean score (0–100)
-        <input type="number" min="0" max="100" step="0.01" name="weighted_mean_score" value="{{ features.weighted_mean_score }}" required>
+        <input type="number" min="0" max="100" step="any" inputmode="decimal" name="weighted_mean_score" value="{{ features.weighted_mean_score }}" required>
         <span class="hint">Each score weighted by its share of the final grade.</span>
       </label>
       <label>Mean days from due date to submission
-        <input type="number" min="0" step="0.01" name="mean_days_to_submit" value="{{ features.mean_days_to_submit }}" required>
+        <input type="number" step="any" inputmode="decimal" name="mean_days_to_submit" value="{{ features.mean_days_to_submit }}" required>
+        <span class="hint">Negative = submitted before the due date.</span>
       </label>
     </fieldset>
 
