@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Global SHAP — OULAD Dashboard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Global SHAP Explanations</h1>
+  <p class="lead">
+    Two SHAP explainers: LinearSHAP for the Logistic Regression (log-odds units,
+    post-scaler feature space) and TreeSHAP for the Random Forest (probability units,
+    raw feature space). The two scales are not directly comparable in magnitude, but
+    the sign of each SHAP value (push toward Fail vs. toward Pass) and the rank order
+    are.
+  </p>
+</section>
+
+<section class="card two-col">
+  <div>
+    <h2>Logistic Regression — Beeswarm</h2>
+    <img class="figure" src="{{ summary_lr_url }}" alt="LR SHAP beeswarm">
+  </div>
+  <div>
+    <h2>Random Forest — Beeswarm</h2>
+    <img class="figure" src="{{ summary_rf_url }}" alt="RF SHAP beeswarm">
+  </div>
+</section>
+
+<section class="card two-col">
+  <div>
+    <h2>Logistic Regression — Mean |SHAP|</h2>
+    <img class="figure" src="{{ importance_lr_url }}" alt="LR mean |SHAP| bar">
+  </div>
+  <div>
+    <h2>Random Forest — Mean |SHAP|</h2>
+    <img class="figure" src="{{ importance_rf_url }}" alt="RF mean |SHAP| bar">
+  </div>
+</section>
+
+<section class="card">
+  <h2>Top-10 by Mean |SHAP|</h2>
+  <div class="two-col">
+    <div>
+      <h3>Logistic Regression</h3>
+      <table class="metrics">
+        <thead><tr><th>Feature</th><th>Mean |SHAP|</th></tr></thead>
+        <tbody>
+          {% for row in shap_lr_top10 %}
+          <tr><td>{{ row.feature }}</td><td>{{ "%.4f"|format(row.mean_abs_shap) }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Random Forest</h3>
+      <table class="metrics">
+        <thead><tr><th>Feature</th><th>Mean |SHAP|</th></tr></thead>
+        <tbody>
+          {% for row in shap_rf_top10 %}
+          <tr><td>{{ row.feature }}</td><td>{{ "%.4f"|format(row.mean_abs_shap) }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="card two-col">
+  <div>
+    <h2>Cross-Model Importance</h2>
+    <img class="figure" src="{{ cross_importance_url }}" alt="Cross-model importance">
+  </div>
+  <div>
+    <h2>Cross-Model Scatter</h2>
+    <img class="figure" src="{{ cross_scatter_url }}" alt="Cross-model feature scatter">
+  </div>
+</section>
+
+<section class="card">
+  <h2>Cross-Model Summary</h2>
+  <table class="metrics">
+    <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+    <tbody>
+      {% for row in cross_summary %}
+      <tr><td>{{ row.metric }}</td><td>{{ row.value }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Feature Overlap</h3>
+  <table class="metrics">
+    <thead><tr><th>Status</th><th>Features</th></tr></thead>
+    <tbody>
+      {% for row in cross_comp %}
+      <tr>
+        <td><strong>{{ row.status }}</strong></td>
+        <td><code>{{ row.features }}</code></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

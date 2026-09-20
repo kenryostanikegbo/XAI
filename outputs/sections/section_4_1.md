@@ -1,0 +1,15 @@
+## Introduction
+
+This chapter reports the analytical findings of the present study. The four research questions set out in Chapter 1 §1.5 are answered in turn, the six research objectives set out in Chapter 1 §1.5.1–§1.5.6 are addressed through the analysis, and the methodological commitments of Chapter 3 are honoured at every step. The chapter is the empirical centre of the dissertation: Chapter 1 motivates the work, Chapter 2 surveys the literature, Chapter 3 documents the methodology, and Chapter 5 turns the findings into conclusions and recommendations. Chapter 4 sits in the middle, and it is the chapter in which the data speaks.
+
+### Chapter Structure
+
+The chapter is organised into nine sections. The first three are preambular: this introduction (§4.1), a dataset recap (§4.2), and a methodology recap (§4.3). The fourth section (§4.4) explains why SHAP was chosen as the interpretability framework and what guarantees it offers. The remaining five sections are the findings: predictive performance comparison (§4.5), global SHAP interpretability (§4.6), local SHAP interpretability (§4.7), cross-model interpretability comparison (§4.8), and a synthesis section that reads the four findings together (§4.9). Each findings section is self-contained but cross-references the others where appropriate, and the synthesis section draws the threads together against the four research questions.
+
+### How the Chapter Maps to the Research Questions
+
+The mapping between the four research questions and the findings sections is as follows. Research Question 1 (predictive performance) is answered in §4.5 by means of a six-metric comparison (precision, recall, F1, accuracy, ROC-AUC, average precision) supported by receiver-operating-characteristic and precision-recall curves. Research Question 2 (global feature importance) is answered in §4.6 by means of SHAP beeswarm plots and mean-|SHAP| bar charts for each classifier, with the top-20 features reported in full and the top-10 in summary. Research Question 3 (cross-model interpretability agreement) is answered in §4.8 by means of Spearman rank correlation, top-10 Jaccard index, side-by-side importance bar chart, and a symlog scatter plot. Research Question 4 (local interpretability agreement) is answered in §4.7 by means of SHAP waterfall plots on six illustrative cases and is reinforced in §4.8 by a per-case direction-agreement table.
+
+### Reading the Chapter
+
+The chapter is written so that each findings section can be read on its own by a reader who already has the Chapter 3 methodology in mind, but a complete reading is recommended. The preambular sections (§4.1–§4.4) set up notation and definitions that are used throughout; the findings sections (§4.5–§4.8) report the analytical results; and the synthesis section (§4.9) reads the four findings together against the research questions. Figures are numbered consecutively across the chapter, with Figure 1 in §4.5 and Figure 14 in §4.8. Tables are also numbered consecutively. The full per-feature SHAP rankings and confusion matrices are reported in Appendix A.

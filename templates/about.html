@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}About — OULAD Dashboard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>About this Dashboard</h1>
+  <p>
+    This dashboard is the deployment deliverable for the dissertation
+    <em>Predicting Student Failure with Explainable Machine Learning</em>,
+    which uses the Open University Learning Analytics Dataset (OULAD;
+    Kuzilek et al., 2017).
+  </p>
+
+  <h2>Methodology in brief</h2>
+  <ul>
+    <li>Six of the seven OULAD tables are integrated; Withdrawn students are excluded (final outcome ambiguous).</li>
+    <li>The modelling matrix has 22,311 rows and 44 one-hot columns; the held-out test set has 6,732 rows.</li>
+    <li>Two classifiers: Logistic Regression with L2 regularisation, and a Random Forest with 500 trees.</li>
+    <li>Tuning: 5-fold stratified GridSearchCV on F1, with SMOTE inside the cross-validation pipeline (no leakage).</li>
+    <li>Interpretability: LinearSHAP for the LR (log-odds) and TreeSHAP for the RF (probability).</li>
+    <li>Test-set evaluation: ROC-AUC = 0.957 (LR) and 0.962 (RF). F1 = 0.840 (LR) and 0.859 (RF).</li>
+  </ul>
+
+  <h2>What the dashboard shows</h2>
+  <ul>
+    <li><a href="{{ url_for('index') }}">Home</a>: model card, performance metrics, ROC/PR curves, both confusion matrices.</li>
+    <li><a href="{{ url_for('global_page') }}">Global SHAP</a>: both beeswarms, both mean-|SHAP| bar charts, the cross-model comparison.</li>
+    <li><a href="{{ url_for('local_cases_page') }}">Local Cases</a>: the six illustrative cases from Chapter 4 §4.7 with deep links.</li>
+    <li>Any <code>/student/&lt;row_idx&gt;</code> page: live predictions and a JSON-rendered waterfall for any test row.</li>
+  </ul>
+
+  <h2>Limitations</h2>
+  <ul>
+    <li>Single institution, single dataset; cross-institutional transfer is an open question.</li>
+    <li>Withdrawn students are excluded; the model cannot flag withdrawal risk.</li>
+    <li>All 21 features are aggregated over the full presentation; no temporal trajectory.</li>
+    <li>SHAP values are statistical associations, not causal claims.</li>
+    <li>Threshold sensitivity and feature-scale robustness checks are out of scope of this deployment.</li>
+  </ul>
+
+  <h2>Reproducibility</h2>
+  <p>
+    The dashboard reuses the dissertation's saved artifacts in
+    <code>outputs/models/</code> and <code>outputs/figures/</code>. No retraining
+    happens at runtime. The full pipeline is reproducible from a clean clone of
+    the repository in under 45 minutes on a standard laptop, with a fixed
+    random seed at every stochastic stage.
+  </p>
+</section>
+{% endblock %}

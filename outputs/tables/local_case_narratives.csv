@@ -1,0 +1,121 @@
+case,model,narrative
+TP,RF,"### TP (RF)
+\* true label = Fail, predicted = Fail (P(Fail) = 1.000)
+\* **Push toward Fail:**
+  - submission_rate = +0.00, SHAP = +0.140
+  - assessments_submitted = +0.00, SHAP = +0.094
+  - active_days = +0.00, SHAP = +0.064
+\* **Push toward Pass:**
+  - module_GGG = +1.00, SHAP = -0.012
+  - gender_F = +1.00, SHAP = -0.011
+  - early_clicks_14d = +0.00, SHAP = -0.008"
+TP,LR,"### TP (LR)
+\* true label = Fail, predicted = Fail (P(Fail) = 1.000)
+\* **Push toward Fail:**
+  - submission_rate = -1.90, SHAP = +6.730
+  - weighted_mean_score = -1.87, SHAP = +3.910
+  - edu_A Level or Equivalent = -0.76, SHAP = +2.976
+\* **Push toward Pass:**
+  - module_GGG = +3.14, SHAP = -8.909
+  - region_Yorkshire Region = +4.61, SHAP = -7.187
+  - edu_Lower Than A Level = +1.38, SHAP = -3.904"
+TN,RF,"### TN (RF)
+\* true label = Pass, predicted = Pass (P(Fail) = 0.001)
+\* **Push toward Fail:**
+  - mean_clicks_per_day = +62.99, SHAP = +0.010
+  - gender_F = +0.00, SHAP = +0.010
+  - presentation_year = +2013.00, SHAP = +0.007
+\* **Push toward Pass:**
+  - submission_rate = +0.92, SHAP = -0.132
+  - mean_assessment_score = +88.75, SHAP = -0.084
+  - assessments_submitted = +12.00, SHAP = -0.076"
+TN,LR,"### TN (LR)
+\* true label = Pass, predicted = Pass (P(Fail) = 0.002)
+\* **Push toward Fail:**
+  - gender_F = -0.81, SHAP = +2.073
+  - edu_Lower Than A Level = -0.72, SHAP = +1.673
+  - module_GGG = -0.32, SHAP = +1.572
+\* **Push toward Pass:**
+  - region_London Region = +3.61, SHAP = -7.369
+  - module_FFF = +1.97, SHAP = -3.130
+  - edu_A Level or Equivalent = +1.31, SHAP = -2.976"
+FN,RF,"### FN (RF)
+\* true label = Fail, predicted = Pass (P(Fail) = 0.035)
+\* **Push toward Fail:**
+  - mean_assessment_score = +60.20, SHAP = +0.072
+  - gender_M = +0.00, SHAP = +0.016
+  - edu_A Level or Equivalent = +0.00, SHAP = +0.011
+\* **Push toward Pass:**
+  - submission_rate = +0.83, SHAP = -0.142
+  - assessments_submitted = +5.00, SHAP = -0.077
+  - weighted_mean_score = +73.75, SHAP = -0.071"
+FN,LR,"### FN (LR)
+\* true label = Fail, predicted = Pass (P(Fail) = 0.028)
+\* **Push toward Fail:**
+  - edu_A Level or Equivalent = -0.76, SHAP = +2.976
+  - gender_M = -0.99, SHAP = +2.275
+  - module_GGG = -0.32, SHAP = +1.572
+\* **Push toward Pass:**
+  - region_South Region = +3.58, SHAP = -7.800
+  - module_BBB = +1.93, SHAP = -4.011
+  - edu_Lower Than A Level = +1.38, SHAP = -3.904"
+FP,RF,"### FP (RF)
+\* true label = Pass, predicted = Fail (P(Fail) = 0.931)
+\* **Push toward Fail:**
+  - submission_rate = +0.60, SHAP = +0.121
+  - assessments_submitted = +3.00, SHAP = +0.118
+  - active_days = +7.00, SHAP = +0.094
+\* **Push toward Pass:**
+  - mean_assessment_score = +74.00, SHAP = -0.022
+  - module_EEE = +1.00, SHAP = -0.021
+  - edu_HE Qualification = +1.00, SHAP = -0.021"
+FP,LR,"### FP (LR)
+\* true label = Pass, predicted = Fail (P(Fail) = 0.685)
+\* **Push toward Fail:**
+  - edu_A Level or Equivalent = -0.76, SHAP = +2.976
+  - gender_F = -0.81, SHAP = +2.073
+  - edu_Lower Than A Level = -0.72, SHAP = +1.673
+\* **Push toward Pass:**
+  - region_Yorkshire Region = +4.61, SHAP = -7.187
+  - edu_HE Qualification = +2.75, SHAP = -4.853
+  - module_EEE = +3.40, SHAP = -4.157"
+Borderline-1,RF,"### Borderline-1 (RF)
+\* true label = Pass, predicted = Pass (P(Fail) = 0.498)
+\* **Push toward Fail:**
+  - mean_assessment_score = +50.15, SHAP = +0.162
+  - weighted_mean_score = +47.55, SHAP = +0.130
+  - mean_days_to_submit = +4.31, SHAP = +0.023
+\* **Push toward Pass:**
+  - submission_rate = +0.93, SHAP = -0.106
+  - assessments_submitted = +13.00, SHAP = -0.076
+  - edu_A Level or Equivalent = +1.00, SHAP = -0.034"
+Borderline-1,LR,"### Borderline-1 (LR)
+\* true label = Pass, predicted = Fail (P(Fail) = 0.566)
+\* **Push toward Fail:**
+  - gender_M = -0.99, SHAP = +2.275
+  - edu_Lower Than A Level = -0.72, SHAP = +1.673
+  - module_GGG = -0.32, SHAP = +1.572
+\* **Push toward Pass:**
+  - region_South West Region = +4.09, SHAP = -7.763
+  - edu_A Level or Equivalent = +1.31, SHAP = -2.976
+  - module_DDD = +2.32, SHAP = -2.922"
+Borderline-2,RF,"### Borderline-2 (RF)
+\* true label = Pass, predicted = Pass (P(Fail) = 0.496)
+\* **Push toward Fail:**
+  - mean_assessment_score = +58.00, SHAP = +0.131
+  - weighted_mean_score = +52.01, SHAP = +0.099
+  - edu_A Level or Equivalent = +0.00, SHAP = +0.027
+\* **Push toward Pass:**
+  - submission_rate = +0.86, SHAP = -0.107
+  - edu_HE Qualification = +1.00, SHAP = -0.058
+  - active_days = +94.00, SHAP = -0.053"
+Borderline-2,LR,"### Borderline-2 (LR)
+\* true label = Pass, predicted = Pass (P(Fail) = 0.463)
+\* **Push toward Fail:**
+  - edu_A Level or Equivalent = -0.76, SHAP = +2.976
+  - gender_F = -0.81, SHAP = +2.073
+  - edu_Lower Than A Level = -0.72, SHAP = +1.673
+\* **Push toward Pass:**
+  - region_South West Region = +4.09, SHAP = -7.763
+  - edu_HE Qualification = +2.75, SHAP = -4.853
+  - module_DDD = +2.32, SHAP = -2.922"

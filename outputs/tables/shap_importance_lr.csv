@@ -1,0 +1,45 @@
+feature,mean_abs_shap
+edu_A Level or Equivalent,2.97637846118969
+edu_Lower Than A Level,2.536431937863738
+submission_rate,2.401323785763661
+module_GGG,2.32860951597076
+gender_F,2.193481480119115
+gender_M,2.1349556231748443
+weighted_mean_score,1.903751219461394
+module_BBB,1.7905021316451157
+edu_HE Qualification,1.7056625317128102
+region_East Anglian Region,1.6056635273846276
+region_Scotland,1.4801704920211374
+region_East Midlands Region,1.442882679026539
+region_South East Region,1.3468827600422182
+module_FFF,1.320160512566614
+region_South Region,1.2781384336218988
+region_London Region,1.2705141890540164
+region_North Western Region,1.1891065213063925
+region_Yorkshire Region,1.1762691748889793
+module_CCC,1.1599687762116406
+region_South West Region,1.1078668405581007
+module_DDD,1.048920094539673
+region_West Midlands Region,1.0297601373826306
+module_EEE,0.866589890616435
+region_North Region,0.7511558763531905
+region_Wales,0.727801271844655
+region_Ireland,0.6195530760235585
+mean_assessment_score,0.4947113308254832
+active_days,0.42786307060910916
+distinct_resources,0.39243285466333133
+module_AAA,0.35030389321939903
+assessments_submitted,0.3003907308161828
+early_clicks_14d,0.22695235174289563
+edu_No Formal quals,0.11450732265221558
+module_presentation_length,0.0710862250736323
+edu_Post Graduate Qualification,0.06219965654675949
+presentation_year,0.05570259063870081
+age_band_ord,0.04195419380311848
+mean_days_to_submit,0.038431274194767856
+weekend_click_ratio,0.026863829783320442
+imd_band_ord,0.026609167794551348
+max_daily_clicks,0.024323785600540687
+num_of_prev_attempts,0.022635066813482208
+total_clicks,0.022235006434943885
+mean_clicks_per_day,0.006348126420815157

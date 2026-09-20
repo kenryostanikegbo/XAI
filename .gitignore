@@ -1,0 +1,34 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+*.egg-info/
+
+# Claude / agent state
+.claude/
+.claude.json
+
+# Notebooks (kept on disk; not deployed)
+notebooks/
+
+# Build artifacts
+*.lock
+*.docx
+*.pdf
+*.tmp
+
+# Outputs we deliberately DO ship: outputs/models/, outputs/figures/,
+# outputs/tables/, data/processed/, data/raw/. The app reads them at runtime.
+# If you ever want to slim the repo, add them here — but Render's free tier
+# has 512 MB RAM and we need the model artifacts at runtime.

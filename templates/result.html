@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Live prediction result · OULAD Dashboard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Live prediction result</h1>
+  <p class="note">
+    Generated live from the form inputs. No row index in the test set was
+    required — the encoding mirrors notebook 02's preprocessing exactly
+    (round-trip verified at app startup).
+  </p>
+
+  <h2>Predictions</h2>
+  <table class="metrics">
+    <thead><tr><th>Classifier</th><th>P(Fail)</th><th>Predicted</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Logistic Regression</strong></td>
+        <td>{{ "%.4f"|format(result.lr_proba) }}</td>
+        <td>
+          {% if result.lr_pred == 1 %}<span class="badge badge-fail">Fail</span>{% else %}<span class="badge badge-pass">Pass</span>{% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Random Forest</strong></td>
+        <td>{{ "%.4f"|format(result.rf_proba) }}</td>
+        <td>
+          {% if result.rf_pred == 1 %}<span class="badge badge-fail">Fail</span>{% else %}<span class="badge badge-pass">Pass</span>{% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  {% if model_disagreement %}
+    <p class="warn">
+      ⚠ The two classifiers disagree. Per Chapter 5 §5.4 Recommendation 2,
+      treat the Logistic Regression prediction as the justification reference
+      and the Random Forest prediction as the catchment reference. The
+      LR SHAP waterfall below explains the LR output.
+    </p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Logistic Regression SHAP explanation (live)</h2>
+  <p class="note">
+    Red bars push the log-odds toward Fail; blue bars push toward Pass.
+    Values are in log-odds (post-scaler) — see <a href="{{ url_for('about_page') }}">About</a>.
+  </p>
+  <div id="lr-waterfall"
+       data-row-idx="-1"
+       data-model="lr"
+       data-shap='{{ result.lr_shap|tojson }}'
+       data-features='{{ result.feature_names|tojson }}'></div>
+</section>
+
+<section class="card">
+  <h2>Random Forest SHAP explanation (live)</h2>
+  <p class="note">
+    Red bars push the prediction toward Fail; blue toward Pass. Values are in
+    probability space (TreeSHAP on the raw input features) and are not
+    numerically comparable to the LR log-odds above; signs and ranks are.
+  </p>
+  <div id="rf-waterfall"
+       data-row-idx="-1"
+       data-model="rf"
+       data-shap='{{ result.rf_shap|tojson }}'
+       data-features='{{ result.feature_names|tojson }}'></div>
+</section>
+
+<section class="card">
+  <h2>Inputs you submitted</h2>
+  <table class="metrics inputs-table">
+    <tbody>
+      {% for k, v in features.items() %}
+        <tr><th>{{ k }}</th><td>{{ v }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<a class="back-link" href="{{ url_for('predict_form') }}">&larr; Back to form</a>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/student_waterfall.js') }}"></script>
+{% endblock %}

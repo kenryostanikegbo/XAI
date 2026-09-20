@@ -1,0 +1,24 @@
+# Render Blueprint — declarative Render service config.
+#
+# On Render: New → Blueprint → point at this repo → it'll read render.yaml and
+# create the service with these settings. Set APP_USERNAME and APP_PASSWORD in
+# the dashboard before deploying (the blueprint leaves them blank for you to
+# fill in). The /healthz route is the readiness probe Render pings every
+# few minutes to keep the free-tier instance warm.
+
+services:
+  - type: web
+    name: oulad-dashboard
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: APP_USERNAME
+        sync: false       # fill in on the Render dashboard before first deploy
+      - key: APP_PASSWORD
+        sync: false       # ditto

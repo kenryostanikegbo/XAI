@@ -1,0 +1,22 @@
+# Pinned dependencies for the OULAD student-failure prediction project.
+# Install inside the project virtual environment:
+#     python -m venv .venv
+#     source .venv/bin/activate   (or: .venv\Scripts\activate on Windows)
+#     pip install -r requirements.txt
+
+pandas==2.2.3
+numpy==1.26.4
+matplotlib==3.9.2
+seaborn==0.13.2
+scikit-learn==1.5.2
+imbalanced-learn==0.12.4
+shap==0.46.0
+jupyter==1.1.1
+ipykernel==6.29.5
+pyarrow==17.0.0
+scipy==1.13.1
+
+# Web dashboard (Flask 3.x + gunicorn for Linux containers + waitress for Windows dev)
+Flask==3.0.3
+gunicorn==22.0.0
+waitress==3.0.0

@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}Live prediction · OULAD Dashboard{% endblock %}
+
+{% block content %}
+<section class="page-intro">
+  <h1>Live prediction</h1>
+  <p class="lede">
+    Edit any field and press <strong>Predict</strong> to generate both
+    classifiers' predictions and a Logistic Regression SHAP explanation.
+    The picker lets you load any of the 300 pre-cached rows — for those
+    rows, both LR and RF SHAP waterfalls are immediately available.
+  </p>
+</section>
+
+{# ---- Picker card (Nielsen #1: visibility of system status) --------------- #}
+<aside class="card picker-card" id="picker-card" aria-labelledby="picker-title">
+  <h2 id="picker-title">Load a saved row</h2>
+  <p class="hint">
+    Searches the 300-row stratified SHAP subset — the same set the
+    dissertation pre-rendered for both classifiers. Typing here is optional.
+  </p>
+  <div class="picker">
+    <input
+      type="search"
+      id="picker-input"
+      autocomplete="off"
+      placeholder="Type an id_student (or partial)…"
+      aria-controls="picker-list"
+      aria-autocomplete="list"
+      aria-expanded="false"
+    />
+    <ul id="picker-list" role="listbox" hidden></ul>
+  </div>
+  <div id="picker-status" class="picker-status" aria-live="polite"></div>
+</aside>
+
+{# ---- Errors (Nielsen #9: help users recognise + recover) ----------------- #}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flashes">
+      {% for category, message in messages %}
+        <li class="flash flash-{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<form method="post" action="{{ url_for('predict_submit') }}" class="predict-form" id="predict-form">
+  <div class="form-grid">
+
+    <fieldset>
+      <legend>Demographics</legend>
+      <p class="legend-help">Student background. Drives most of the LR coefficients.</p>
+      <label>Gender
+        <select name="gender" required>
+          {% for g in opts.genders %}
+            <option value="{{ g }}" {% if g == features.gender %}selected{% endif %}>{{ g }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Age band
+        <select name="age_band" required>
+          {% for a in opts.age_bands %}
+            <option value="{{ a }}" {% if a == features.age_band %}selected{% endif %}>{{ a }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Region
+        <select name="region" required>
+          {% for r in opts.regions %}
+            <option value="{{ r }}" {% if r == features.region %}selected{% endif %}>{{ r }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Highest education
+        <select name="highest_education" required>
+          {% for e in opts.education %}
+            <option value="{{ e }}" {% if e == features.highest_education %}selected{% endif %}>{{ e }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>IMD band
+        <select name="imd_band">
+          <option value="" {% if features.imd_band in ("", "?", "Unknown") %}selected{% endif %}>Unknown</option>
+          {% for i in opts.imd_bands %}
+            <option value="{{ i }}" {% if i == features.imd_band %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <span class="hint">Index of Multiple Deprivation decile. Blank = unknown.</span>
+      </label>
+      <label>Previous attempts
+        <input type="number" min="0" name="num_of_prev_attempts" value="{{ features.num_of_prev_attempts }}" required>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>VLE engagement</legend>
+      <p class="legend-help">Total clicks + activity over the whole presentation.</p>
+      <label>Total clicks
+        <input type="number" min="0" step="1" name="total_clicks" value="{{ features.total_clicks }}" required>
+      </label>
+      <label>Active days
+        <input type="number" min="0" step="1" name="active_days" value="{{ features.active_days }}" required>
+      </label>
+      <label>Max daily clicks
+        <input type="number" min="0" step="1" name="max_daily_clicks" value="{{ features.max_daily_clicks }}" required>
+      </label>
+      <label>Distinct resources
+        <input type="number" min="0" step="1" name="distinct_resources" value="{{ features.distinct_resources }}" required>
+      </label>
+      <label>Clicks in first 14 days
+        <input type="number" min="0" step="1" name="early_clicks_14d" value="{{ features.early_clicks_14d }}" required>
+        <span class="hint">Early-engagement signal; top-3 LR feature.</span>
+      </label>
+      <label>Weekend click ratio (0–1)
+        <input type="number" min="0" max="1" step="0.01" name="weekend_click_ratio" value="{{ features.weekend_click_ratio }}" required>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Assessment performance</legend>
+      <p class="legend-help">Submission pattern and weighted grades.</p>
+      <label>Assessments submitted
+        <input type="number" min="0" step="1" name="assessments_submitted" value="{{ features.assessments_submitted }}" required>
+        <span class="hint">Out of {{ max_assessments_available }} available for this (module, presentation).</span>
+      </label>
+      <label>Mean assessment score (0–100)
+        <input type="number" min="0" max="100" step="0.01" name="mean_assessment_score" value="{{ features.mean_assessment_score }}" required>
+      </label>
+      <label>Weighted mean score (0–100)
+        <input type="number" min="0" max="100" step="0.01" name="weighted_mean_score" value="{{ features.weighted_mean_score }}" required>
+        <span class="hint">Each score weighted by its share of the final grade.</span>
+      </label>
+      <label>Mean days from due date to submission
+        <input type="number" min="0" step="0.01" name="mean_days_to_submit" value="{{ features.mean_days_to_submit }}" required>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Course context</legend>
+      <p class="legend-help">Which module and presentation the student is on.</p>
+      <label>Module
+        <select name="code_module" required>
+          {% for m in opts.modules %}
+            <option value="{{ m }}" {% if m == features.code_module %}selected{% endif %}>{{ m }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Presentation
+        <select name="code_presentation" required>
+          {% for p in opts.presentations %}
+            <option value="{{ p }}" {% if p == features.code_presentation %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <p class="hint">Not every module × presentation pair exists in OULAD; the server will reject invalid pairs with a clear error.</p>
+    </fieldset>
+
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-primary">Predict</button>
+    <button type="reset" class="btn-secondary">Reset to defaults</button>
+    <span class="form-hint">Submitting re-runs both classifiers + LR SHAP against the fitted pipelines.</span>
+  </div>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/predict_picker.js') }}"></script>
+{% endblock %}

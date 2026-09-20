@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Local Cases — OULAD Dashboard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Six Illustrative Cases</h1>
+  <p class="lead">
+    These are the six student-presentation rows whose local SHAP explanations are
+    inspected in Chapter 4 §4.7 of the dissertation. Each links to a per-student
+    page that shows both classifiers' predictions and both SHAP waterfalls side by
+    side.
+  </p>
+
+  <div class="case-grid">
+    {% for c in cases %}
+    <a class="case-tile" href="{{ url_for('student_page', row_idx=c.row_idx) }}">
+      <div class="case-header">
+        <span class="case-label">{{ c.case }}</span>
+        {% if c.model_disagreement %}
+        <span class="badge badge-warn">Models disagree</span>
+        {% endif %}
+      </div>
+      <div class="case-body">
+        <div class="kv"><span>Student</span><code>{{ c.id_student }} / {{ c.code_presentation }}</code></div>
+        <div class="kv"><span>True label</span><strong>{{ "Fail" if c.y_true == 1 else "Pass" }}</strong></div>
+        <div class="kv"><span>LR prediction</span><strong>{{ "Fail" if c.lr_pred == 1 else "Pass" }}</strong> ({{ "%.3f"|format(c.lr_proba) }})</div>
+        <div class="kv"><span>RF prediction</span><strong>{{ "Fail" if c.rf_pred == 1 else "Pass" }}</strong> ({{ "%.3f"|format(c.rf_proba) }})</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

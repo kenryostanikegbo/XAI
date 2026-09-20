@@ -1,0 +1,11 @@
+.venv/
+notebooks/
+__pycache__/
+*.pyc
+.claude/
+.git/
+.gitignore
+.dockerignore
+*.docx
+*.pdf
+*.lock

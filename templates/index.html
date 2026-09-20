@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Model Card — OULAD Dashboard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Model Card</h1>
+  <p class="lead">
+    Two classifiers were trained on the OULAD integrated matrix (22,311 student-presentation
+    rows, 44 one-hot columns): Logistic Regression with L2 regularisation, and a Random
+    Forest with 500 trees. The held-out test set has 6,732 rows at the natural 31.4 per cent
+    Fail prevalence. F1 was the tuning metric; six metrics are reported below.
+  </p>
+
+  <h2>Performance Metrics</h2>
+  <table class="metrics">
+    <thead>
+      <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th><th>Avg. Precision</th></tr>
+    </thead>
+    <tbody>
+      {% for row in metrics %}
+      <tr>
+        <td><strong>{{ row.model }}</strong></td>
+        <td>{{ "%.4f"|format(row.accuracy) }}</td>
+        <td>{{ "%.4f"|format(row.precision) }}</td>
+        <td>{{ "%.4f"|format(row.recall) }}</td>
+        <td>{{ "%.4f"|format(row.f1) }}</td>
+        <td>{{ "%.4f"|format(row.roc_auc) }}</td>
+        <td>{{ "%.4f"|format(row.avg_precision) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Per-Metric Winners</h3>
+  <table class="metrics">
+    <thead><tr><th>Winner</th><th>Metric</th><th>Margin</th></tr></thead>
+    <tbody>
+      {% for row in winners %}
+      <tr>
+        <td><strong>{{ row.winner }}</strong></td>
+        <td>{{ row.metric }}</td>
+        <td>{{ "%.4f"|format(row.margin) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="note">
+    The Random Forest leads on five of six metrics; the Logistic Regression holds a marginal
+    lead on precision alone. The ROC-AUC gap of 0.005 is not statistically distinguishable.
+  </p>
+</section>
+
+<section class="card two-col">
+  <div>
+    <h2>ROC Curves</h2>
+    <img class="figure" src="{{ roc_url }}" alt="ROC curves for LR and RF">
+  </div>
+  <div>
+    <h2>Precision-Recall Curves</h2>
+    <img class="figure" src="{{ pr_url }}" alt="Precision-recall curves for LR and RF">
+  </div>
+</section>
+
+<section class="card two-col">
+  <div>
+    <h2>Confusion Matrix — Logistic Regression</h2>
+    <table class="confusion">
+      <thead>
+        <tr><th></th><th>Predicted Pass</th><th>Predicted Fail</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>Actual Pass</th>
+          <td class="cell-correct">{{ conf_lr[0][0] }}<br><small>TN</small></td>
+          <td class="cell-error">{{ conf_lr[0][1] }}<br><small>FP</small></td>
+        </tr>
+        <tr><th>Actual Fail</th>
+          <td class="cell-error">{{ conf_lr[1][0] }}<br><small>FN</small></td>
+          <td class="cell-correct">{{ conf_lr[1][1] }}<br><small>TP</small></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h2>Confusion Matrix — Random Forest</h2>
+    <table class="confusion">
+      <thead>
+        <tr><th></th><th>Predicted Pass</th><th>Predicted Fail</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>Actual Pass</th>
+          <td class="cell-correct">{{ conf_rf[0][0] }}<br><small>TN</small></td>
+          <td class="cell-error">{{ conf_rf[0][1] }}<br><small>FP</small></td>
+        </tr>
+        <tr><th>Actual Fail</th>
+          <td class="cell-error">{{ conf_rf[1][0] }}<br><small>FN</small></td>
+          <td class="cell-correct">{{ conf_rf[1][1] }}<br><small>TP</small></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

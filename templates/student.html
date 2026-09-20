@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Student {{ row_idx }} — OULAD Dashboard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Student {{ row_idx }}</h1>
+  <div class="kv"><span>id_student</span><code>{{ id_student }}</code></div>
+  <div class="kv"><span>code_presentation</span><code>{{ code_presentation }}</code></div>
+  <div class="kv"><span>True label</span><strong>{{ "Fail" if pred.y_true == 1 else "Pass" }}</strong></div>
+
+  <h2>Predictions</h2>
+  <table class="metrics">
+    <thead><tr><th>Classifier</th><th>P(Fail)</th><th>Predicted</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Logistic Regression</strong></td>
+        <td>{{ "%.4f"|format(pred.lr_proba) }}</td>
+        <td>
+          {% if pred.lr_pred == 1 %}<span class="badge badge-fail">Fail</span>{% else %}<span class="badge badge-pass">Pass</span>{% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Random Forest</strong></td>
+        <td>{{ "%.4f"|format(pred.rf_proba) }}</td>
+        <td>
+          {% if pred.rf_pred == 1 %}<span class="badge badge-fail">Fail</span>{% else %}<span class="badge badge-pass">Pass</span>{% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+{% if canonical_lr_png %}
+<section class="card two-col">
+  <div>
+    <h2>LR SHAP Waterfall</h2>
+    <img class="figure" src="{{ canonical_lr_png }}" alt="LR SHAP waterfall">
+  </div>
+  <div>
+    <h2>RF SHAP Waterfall</h2>
+    {% if canonical_rf_png %}
+      <img class="figure" src="{{ canonical_rf_png }}" alt="RF SHAP waterfall">
+    {% else %}
+      <p class="note">RF SHAP not pre-rendered for this case; see the JSON-rendered view below.</p>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Ad-Hoc SHAP View (live JSON, top 10 features by |SHAP|)</h2>
+  <p class="note">
+    Drawn client-side from <code>/student/{{ row_idx }}/shap.json</code>. Red bars push
+    toward Fail; blue bars push toward Pass. Magnitudes differ across the two
+    classifiers (LR in log-odds, RF in probability) and are not comparable; signs and
+    ranks are.
+  </p>
+  <div class="two-col">
+    <div>
+      <h3>Logistic Regression</h3>
+      <div id="lr-waterfall" data-row-idx="{{ row_idx }}" data-model="lr"></div>
+    </div>
+    <div>
+      <h3>Random Forest</h3>
+      <div id="rf-waterfall" data-row-idx="{{ row_idx }}" data-model="rf"></div>
+      {% if not has_rf_shap %}
+        <p class="note">This row is outside the 300-row stratified SHAP subset, so RF SHAP is unavailable.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<a class="back-link" href="{{ url_for('index') }}">&larr; Back to model card</a>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/student_waterfall.js') }}"></script>
+{% endblock %}

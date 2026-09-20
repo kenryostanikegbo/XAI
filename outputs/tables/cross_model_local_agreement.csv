@@ -1,0 +1,7 @@
+case,y_true,lr_pred,rf_pred,lr_shift,rf_shift,lr_direction,rf_direction,agree_on_direction,agree_on_label
+TP,1,1,1,8.240593876315419,0.4999889497632042,+,+,True,True
+TN,0,0,0,-5.859270044007188,-0.4985389007465558,-,-,True,True
+FN,1,0,0,-3.4051684634517283,-0.4650879530442058,-,-,True,True
+FP,0,1,1,0.9345089682476619,0.43066498946715653,+,+,True,True
+Borderline-1,0,1,0,0.4225052572392116,-0.002236977409449034,+,-,False,False
+Borderline-2,0,0,0,0.009208837337481457,-0.003802934314681333,+,-,False,True

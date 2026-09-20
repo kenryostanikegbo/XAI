@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}OULAD Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <strong>OULAD Student-Failure XAI</strong>
+      <span class="brand-sub">Dashboard for the dissertation deployment</span>
+    </div>
+    <nav class="site-nav">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('predict_form') }}">Live prediction</a>
+      <a href="{{ url_for('global_page') }}">Global SHAP</a>
+      <a href="{{ url_for('local_cases_page') }}">Local Cases</a>
+      <a href="{{ url_for('about_page') }}">About</a>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Trained on the Open University Learning Analytics Dataset (Kuzilek et al., 2017),
+      CC-BY 4.0. Both classifiers + SHAP explainers are the dissertation's saved artifacts;
+      no retraining happens at runtime.
+    </p>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

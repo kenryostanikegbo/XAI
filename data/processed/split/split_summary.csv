@@ -1,0 +1,3 @@
+partition,n_rows,n_pass,n_fail,fail_pct
+train,15705,10769,4936,31.429481056988216
+test,6732,4616,2116,31.43196672608437
