@@ -14,3 +14,6 @@ __pycache__/
 outputs/models/*_search.joblib
 # Raw OULAD CSVs are not used at runtime.
 data/raw/
+# Git LFS stores pointer files in GitHub; Render must receive the real model
+# blobs in the Docker build context, not just the pointers.
+.gitattributes
